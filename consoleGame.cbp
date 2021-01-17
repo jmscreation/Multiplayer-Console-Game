@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Multiplayer Console Game" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_1020_64bit_compiler" />
+		<Build>
+			<Target title="Release">
+				<Option output="game" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_1020_64bit_compiler" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-m64" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m64" />
+				</Linker>
+			</Target>
+			<Target title="Test">
+				<Option output="mptest" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Test/" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_1020_64bit_compiler" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-m64" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m64" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c++20" />
+			<Add option="-fexceptions" />
+			<Add option="-DSFML_STATIC" />
+			<Add directory="libraries" />
+		</Compiler>
+		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
+			<Add option="-static" />
+			<Add library="sfml-network-s" />
+			<Add library="sfml-system-s" />
+			<Add library="ws2_32" />
+			<Add library="winmm" />
+			<Add directory="libraries" />
+		</Linker>
+		<Unit filename="btest.cpp">
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="libraries/console_library.cpp" />
+		<Unit filename="libraries/console_library.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="libraries/multiplayer.cpp" />
+		<Unit filename="libraries/multiplayer.h" />
+		<Unit filename="main.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="main.h">
+			<Option target="Release" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,239 @@
+# depslib dependency file v1.0
+1610843680 source:c:\users\owner\desktop\c++\multiplayer console game\main.cpp
+	"main.h"
+
+1610841344 c:\users\owner\desktop\c++\multiplayer console game\main.h
+	"multiplayer.h"
+	"console_library.h"
+
+1610821996 c:\users\owner\desktop\c++\multiplayer console game\console_library.h
+	<string>
+	<vector>
+	<assert.h>
+	<chrono>
+	"windows.h"
+
+1610822045 source:c:\users\owner\desktop\c++\multiplayer console game\console_library.cpp
+	"console_library.h"
+
+1610829775 c:\users\owner\desktop\c++\multiplayer console game\libraries\console_library.h
+	<string>
+	<vector>
+	<assert.h>
+	<chrono>
+	"windows.h"
+
+1610843851 source:c:\users\owner\desktop\c++\multiplayer console game\libraries\console_library.cpp
+	"console_library.h"
+
+1610839898 source:c:\users\owner\desktop\c++\multiplayer console game\libraries\multiplayer.cpp
+	"multiplayer.h"
+	<iostream>
+
+1610839732 c:\users\owner\desktop\c++\multiplayer console game\libraries\multiplayer.h
+	"SFML/Network.hpp"
+	"windows.h"
+	<string>
+	<vector>
+	<functional>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network.hpp
+	<SFML/System.hpp>
+	<SFML/Network/Ftp.hpp>
+	<SFML/Network/Http.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/Packet.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/Network/SocketSelector.hpp>
+	<SFML/Network/TcpListener.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/Network/UdpSocket.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Err.hpp>
+	<SFML/System/FileInputStream.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Lock.hpp>
+	<SFML/System/MemoryInputStream.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Sleep.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Utf.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\config.hpp
+	"TargetConditionals.h"
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\clock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\export.hpp
+	<SFML/Config.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\time.hpp
+	<SFML/System/Export.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\err.hpp
+	<SFML/System/Export.hpp>
+	<ostream>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\fileinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdio>
+	<string>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\inputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\noncopyable.hpp
+	<SFML/System/Export.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\lock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\memoryinputstream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Export.hpp>
+	<cstdlib>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\mutex.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\sleep.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\string.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<iterator>
+	<locale>
+	<string>
+	<SFML/System/String.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\utf.hpp
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\utf.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\string.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\thread.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/System/Thread.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\thread.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\threadlocal.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\threadlocalptr.hpp
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\threadlocalptr.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\vector2.hpp
+	<SFML/System/Vector2.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\vector2.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\vector3.hpp
+	<SFML/System/Vector3.inl>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\system\vector3.inl
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\ftp.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\export.hpp
+	<SFML/Config.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\tcpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/System/Time.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\socket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<vector>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\sockethandle.hpp
+	<SFML/Config.hpp>
+	<basetsd.h>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\http.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<map>
+	<string>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\ipaddress.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+	<istream>
+	<ostream>
+	<string>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\packet.hpp
+	<SFML/Network/Export.hpp>
+	<string>
+	<vector>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\socketselector.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\tcplistener.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+
+1539628899 c:\users\owner\desktop\c++\multiplayer console game\libraries\sfml\network\udpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<vector>
+
+1610832467 source:c:\users\owner\desktop\c++\multiplayer console game\btest.cpp
+	"console_library.h"
+	"multiplayer.h"
+	"windows.h"
+	<iostream>
+

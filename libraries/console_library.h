@@ -99,6 +99,7 @@ public:
 
 class Game {
     short width, height;
+    COORD fontSize;
     bool _gameRunning;
     static Game* curGame;
     static Draw* screen;
@@ -111,7 +112,7 @@ public:
     inline Input& curInput() { return *input; }
 
     static inline Game& currentGame() { assert(curGame != nullptr); return *curGame; }
-    Game(short width, short height, char backChar);
+    Game(short width, short height, char backChar, COORD fontsz);
     virtual ~Game();
 
     virtual bool update()=0;

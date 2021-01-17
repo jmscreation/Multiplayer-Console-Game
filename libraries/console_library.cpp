@@ -22,8 +22,8 @@ double Clock::getMilliseconds() {
 Draw::Draw(const char backChar): backChar(backChar) {
     console = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    updateWindowSize();
     updateWindowFont();
+    updateWindowSize();
 
     CONSOLE_CURSOR_INFO cursorInfo;
     GetConsoleCursorInfo(console, &cursorInfo);
@@ -55,9 +55,7 @@ void Draw::updateWindowFont(){
 }
 
 bool Draw::setFont(short w, short h) {
-
     fontSize = {w, h};
-
     font.cbSize = sizeof(font);
     font.nFont = 0;
     wcscpy(font.FaceName, L"Raster Font");
@@ -69,12 +67,17 @@ bool Draw::setFont(short w, short h) {
 }
 
 bool Draw::setSize(short x, short y) {
-
     COORD mxsize = GetLargestConsoleWindowSize(console),
           mnsize = { short(GetSystemMetrics(SM_CXMIN) / fontSize.X),
                      short(GetSystemMetrics(SM_CYMIN) / fontSize.Y) };
     x = max(min(x, short(mxsize.X-1)), short(mnsize.X+1));
     y = max(min(y, short(mxsize.Y-1)), short(mnsize.Y+1));
+
+    if((x < width) ^ (y < height)){
+        SetConsoleScreenBufferSize(console, mxsize);
+        width = mxsize.X;
+        height = mxsize.Y;
+    }
 
     COORD size = {x, y};
     SMALL_RECT win = { 0, 0, short(size.X-1), short(size.Y-1) };
@@ -221,15 +224,19 @@ Game* Game::curGame = nullptr;
 Draw* Game::screen = nullptr;
 Input* Game::input = nullptr;
 
-Game::Game(short width, short height, char backChar): width(width), height(height), _gameRunning(false), gameRunning(_gameRunning) {
+Game::Game(short width, short height, char backChar, COORD fontsz): width(width), height(height), fontSize(fontsz), _gameRunning(false), gameRunning(_gameRunning) {
     curGame = this;
     screen = new Draw(backChar);
     input = new Input;
 
     screen->setWindowResizeable(false);
-    screen->setFont(8, 8); // use raster font
+    screen->setFont(fontSize.X, fontSize.Y); // use raster font
     screen->setSize(width, height);
     screen->drawClear();
+
+    if(screen->getFontSize().X != fontSize.X || screen->getFontSize().Y != fontSize.Y){
+        fontSize = screen->getFontSize(); // truncate invalid font size to correct size
+    }
 }
 
 Game::~Game() {
@@ -251,9 +258,11 @@ void Game::runGame(unsigned int msPerTick) {
         if(tick.getMilliseconds() > msPerTick){
             if(!update()) break;
 
+            COORD curFontSize = screen->getFontSize();
+
             if(screen->getScreenSize().X != width || screen->getScreenSize().Y != height ||
-               screen->getFontSize().X != 8 || screen->getFontSize().Y != 8) {
-                screen->setFont(8, 8); // use raster font
+                           curFontSize.X != fontSize.X || curFontSize.Y != fontSize.Y) {
+                screen->setFont(fontSize.X, fontSize.Y);
                 screen->setSize(width, height);
                 screen->drawClear();
                 Object::refreshObjects();

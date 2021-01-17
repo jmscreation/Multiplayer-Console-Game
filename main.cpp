@@ -13,7 +13,7 @@ vector<Player*> players;
 Player* Me = nullptr;
 
 void assignIndex() {
-    if(Me == nullptr || Me->index > 0) return;
+    if(Me == nullptr || Me->index >= 0) return;
     short ind = 0;
     for(Player* p : players){
         if(p->index < 0 || p == Me) continue;
@@ -31,15 +31,13 @@ Player* findPlayer(short ind){
 
 
 /// Initialize Game Instance
-MyGame::MyGame(short width, short height): Game(width, height, BACK_CHAR) {
+MyGame::MyGame(short width, short height): Game(width, height, BACK_CHAR, {FONT_WIDTH, FONT_HEIGHT}) {
     user = new Collidable(5,5,PLAYER_CHAR); /// player object
 
     Me->instance = user;
 
     score = 0;
     gameOver = false;
-
-    //assert(curScreen().setFont(8, 8));
 
     /// border walls
     for(short i=2; i<curScreen().getScreenSize().Y-1; i++){
@@ -72,13 +70,17 @@ bool MyGame::update() {
             case CMD_MY_INDEX:{
                 Player* p = findPlayer(index);
                 if(p == nullptr){
-                    players.push_back( new Player({index, new Collidable(-1, -1, PLAYER_CHAR), Clock()}) );
+                    p = new Player;
+                    p->index = index;
+                    p->instance = new Collidable(-1, -1, PLAYER_CHAR);
+                    p->alive = Clock();
+
+                    players.push_back(p);
                 } else {
                     p->alive.restart();
                 }
                 break;}
             case CMD_UPDATE_POSITION:{
-                //curScreen().drawText(1, 0, (string("Update Pos: ") + to_string(argv[0]) + " " + to_string(argv[1]) ).data());
                 if(argc < 2) return;
                 Player* p = findPlayer(index); //index
                 if(p != nullptr && p->instance != nullptr){
@@ -111,8 +113,8 @@ bool MyGame::update() {
     if(indexTimer.getSeconds() > (Me->index == -1 ? 3 : 1)){
         //curScreen().drawText(1, 0, (string("My Index: ") + to_string(Me->index) + "       " ).data());
         assignIndex();
-
-        mplay.writeCommand(Me->index, CMD_MY_INDEX, {});
+        if(Me->index != -1)
+            mplay.writeCommand(Me->index, CMD_MY_INDEX, {});
         indexTimer.restart();
     }
 

@@ -1,3 +1,8 @@
+/**
+
+    This application is used for strictly low-level debugging purpose only
+
+*/
 
 #include "console_library.h"
 #include "multiplayer.h"
@@ -13,8 +18,6 @@ int main(){
 
     Multiplayer mplay;
     do {
-        mplay.writeCommand(24, 3, {});
-        mplay.writeCommand(24, 12, {3 + rand() % 4, 3 + rand() % 4});
         mplay.update();
         mplay.readData([](short index, short cmd, unsigned short argc, const vector<short>& argv){
             cout << "index: " << index << " cmd: " << cmd << " argc: " << argc << " argv: \n";

@@ -4,8 +4,11 @@
 #include "multiplayer.h"
 #include "console_library.h"
 
-#define GAME_SIZE_W     50
-#define GAME_SIZE_H     25
+#define GAME_SIZE_W     40
+#define GAME_SIZE_H     40
+
+#define FONT_WIDTH      8
+#define FONT_HEIGHT     8
 
 #define BACK_CHAR       ' '
 #define PLAYER_CHAR     '0'

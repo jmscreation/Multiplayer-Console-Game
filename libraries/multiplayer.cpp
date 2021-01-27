@@ -9,7 +9,7 @@ Multiplayer::Multiplayer(Multiplayer::Player* me): Me(me) {
 
     if(me != nullptr && Player::context == this) me->listAppend(); // auto-add outside player into list
 
-    for(int i=0; i < 4; i++){
+    for(int i=0; i < MAX_PORT_BIND; i++){
         if(socket.bind(PORT + i) == sf::Socket::Done){
             currentPort = PORT + i;
             break;
@@ -20,10 +20,11 @@ Multiplayer::Multiplayer(Multiplayer::Player* me): Me(me) {
 Multiplayer::~Multiplayer() {
     socket.unbind();
     if(Player::context == this) Player::context = nullptr;
+    for(Player* p : players) delete p;
 }
 
 void Multiplayer::broadcast(sf::Packet& data){
-    for(int i=0; i < 4; i++){
+    for(int i=0; i < MAX_PORT_BIND; i++){
         socket.send(data, sf::IpAddress::Broadcast, PORT + i);
     }
 }
@@ -34,7 +35,7 @@ bool Multiplayer::update() {
     if(refreshTimer.getElapsedTime().asSeconds() > 4){
         for(size_t i=0;i<players.size(); ++i){
             Player* p = players[i];
-            if(p == Me) continue;
+            if(p == Me) continue; // skip local player
 
             if(p->alive.getElapsedTime().asSeconds() > 4) {
                 delete p;
@@ -95,6 +96,11 @@ bool Multiplayer::readData(std::function<void (short, short, unsigned short, con
     callback(ind, cmd, argc, argv);
 
     return true;
+}
+
+void Multiplayer::writeCommand(short cmd, const std::vector<short>& args){
+    short ind = Me == nullptr ? -1 : Me->index;
+    writeCommand(ind, cmd, args);
 }
 
 void Multiplayer::writeCommand(short index, short cmd, const std::vector<short>& args){

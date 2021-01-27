@@ -1,12 +1,13 @@
 #include "multiplayer.h"
 #include <iostream>
 
-#define PORT 9980
-
 using std::string, std::vector, std::cout;
 
-Multiplayer::Multiplayer() {
+Multiplayer::Multiplayer(Multiplayer::Player* me): Me(me) {
     socket.setBlocking(false);
+    if(Player::context == nullptr) Player::context = this; // auto-set context
+
+    if(me != nullptr && Player::context == this) me->listAppend(); // auto-add outside player into list
 
     for(int i=0; i < 4; i++){
         if(socket.bind(PORT + i) == sf::Socket::Done){
@@ -17,7 +18,8 @@ Multiplayer::Multiplayer() {
 }
 
 Multiplayer::~Multiplayer() {
-
+    socket.unbind();
+    if(Player::context == this) Player::context = nullptr;
 }
 
 void Multiplayer::broadcast(sf::Packet& data){
@@ -27,13 +29,32 @@ void Multiplayer::broadcast(sf::Packet& data){
 }
 
 bool Multiplayer::update() {
+
+    // player index management
+    if(refreshTimer.getElapsedTime().asSeconds() > 4){
+        for(size_t i=0;i<players.size(); ++i){
+            Player* p = players[i];
+            if(p == Me) continue;
+
+            if(p->alive.getElapsedTime().asSeconds() > 4) {
+                delete p;
+                players.erase(players.begin() + i--);
+            }
+        }
+        assignIndex(Me);
+        if(Me->index != -1)
+            writeCommand(Me->index, CMD_PLAYER_INDEX, {});
+        refreshTimer.restart();
+    }
+
     sf::Socket::Status status;
+    // send data
     broadcast(output);
     output.clear();
     input.clear();
     tmp.clear();
 
-    do {
+    do { // receive data
         sf::IpAddress from;
         unsigned short from_port;
         status = socket.receive(tmp, from, from_port);
@@ -80,3 +101,33 @@ void Multiplayer::writeCommand(short index, short cmd, const std::vector<short>&
     output << sf::Int16(index) << sf::Int16(cmd) << sf::Uint16(args.size());
     for(size_t i=0; i<args.size(); ++i) output << sf::Int16(args[i]);
 }
+
+Multiplayer::Player* Multiplayer::findPlayer(short ind){
+    for(Player* p : players){
+        if(p->index == ind) return p;
+    }
+    return nullptr;
+}
+
+void Multiplayer::assignIndex(Multiplayer::Player* me) {
+    if(me == nullptr || me->index >= 0) return; // check if index already assigned
+    short ind = 0;
+    for(Player* p : players){
+        if(p->index < 0 || p == me) continue;
+        ind = std::max(ind, short(p->index + 1));
+    } // get the highest index
+    me->index = ind;
+}
+
+Multiplayer* Multiplayer::Player::context = nullptr;
+
+Multiplayer::Player::Player(): index(-1) {
+    listAppend();
+}
+Multiplayer::Player::~Player() {}
+
+void Multiplayer::Player::listAppend() {
+    if(context == nullptr) return;
+    context->players.push_back(this);
+}
+

@@ -17,6 +17,14 @@
 #define DWALL_CHAR      'x'
 #define POINT_CHAR      '$'
 
+class GamePlayer : public Multiplayer::Player {
+public:
+    Collidable* instance;
+
+    GamePlayer(short ind=-1, Collidable* ii=nullptr);
+    ~GamePlayer();
+};
+
 class MyGame : public Game {
 
     Collidable* user;
@@ -27,7 +35,7 @@ class MyGame : public Game {
 
     Clock keyTimer, indexTimer, refreshTimer, sendClock;
 public:
-    MyGame(short width, short height);
+    MyGame(short width, short height, GamePlayer* me);
     virtual ~MyGame();
 
     virtual bool update();

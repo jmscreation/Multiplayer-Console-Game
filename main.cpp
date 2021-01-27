@@ -2,39 +2,17 @@
 
 using std::string, std::vector, std::to_string, std::min, std::max;
 
-struct Player {
-    short index;
-    Collidable* instance;
-    Clock alive;
-};
+GamePlayer::GamePlayer(short ind, Collidable* ii): instance(ii) { index = ind; }
 
-vector<Player*> players;
-
-Player* Me = nullptr;
-
-void assignIndex() {
-    if(Me == nullptr || Me->index >= 0) return;
-    short ind = 0;
-    for(Player* p : players){
-        if(p->index < 0 || p == Me) continue;
-        ind = max(ind, short(p->index + 1));
-    } // get the highest index
-    Me->index = ind;
+GamePlayer::~GamePlayer() {
+    if(instance != nullptr) delete instance;
 }
-
-Player* findPlayer(short ind){
-    for(Player* p : players){
-        if(p->index == ind) return p;
-    }
-    return nullptr;
-}
-
 
 /// Initialize Game Instance
-MyGame::MyGame(short width, short height): Game(width, height, BACK_CHAR, {FONT_WIDTH, FONT_HEIGHT}) {
+MyGame::MyGame(short width, short height, GamePlayer* me): Game(width, height, BACK_CHAR, {FONT_WIDTH, FONT_HEIGHT}), mplay(Multiplayer(me)) {
     user = new Collidable(5,5,PLAYER_CHAR); /// player object
 
-    Me->instance = user;
+    me->instance = user;
 
     score = 0;
     gameOver = false;
@@ -57,7 +35,6 @@ MyGame::~MyGame() {
 
 
 #define CMD_IS_HOST             2
-#define CMD_MY_INDEX            3
 #define CMD_UPDATE_POSITION     12
 
 
@@ -67,22 +44,17 @@ bool MyGame::update() {
     mplay.update();
     while(mplay.readData([&](short index, short cmd, unsigned short argc, const vector<short>& argv){
         switch(cmd){
-            case CMD_MY_INDEX:{
-                Player* p = findPlayer(index);
+            case CMD_PLAYER_INDEX:{
+                GamePlayer* p = (GamePlayer*)mplay.findPlayer(index);
                 if(p == nullptr){
-                    p = new Player;
-                    p->index = index;
-                    p->instance = new Collidable(-1, -1, PLAYER_CHAR);
-                    p->alive = Clock();
-
-                    players.push_back(p);
+                    p = new GamePlayer(index, new Collidable(-1, -1, PLAYER_CHAR));
                 } else {
                     p->alive.restart();
                 }
                 break;}
             case CMD_UPDATE_POSITION:{
                 if(argc < 2) return;
-                Player* p = findPlayer(index); //index
+                GamePlayer* p = (GamePlayer*)mplay.findPlayer(index); //index
                 if(p != nullptr && p->instance != nullptr){
                     p->instance->updatePos(argv[0], argv[1]); // x y
                 }
@@ -90,35 +62,17 @@ bool MyGame::update() {
         }
     }));
 
-    if(refreshTimer.getSeconds() > 4){
+    if(refreshTimer.getSeconds() > 2){
         curScreen().drawClear();
         Object::refreshObjects();
 
-        for(size_t i=0;i<players.size(); ++i){
-            Player* p = players[i];
-            if(p == Me) continue;
-
-            if(p->alive.getSeconds() > 5) {
-                if(p->instance != nullptr) delete p->instance;
-                delete p;
-                players.erase(players.begin() + i--);
-            }
-        }
-        curScreen().drawText(1, 0, (string("Currently ") + (players.size() == 1 ? "no" : to_string(players.size())) + " players in game         " ).data());
+        curScreen().drawText(1, 0, (string("Currently ") + (mplay.getPlayers().size() == 1 ? "no" : to_string(mplay.getPlayers().size())) + " players in game         " ).data());
 
         refreshTimer.restart();
     }
 
-    // claim new index - send my index
-    if(indexTimer.getSeconds() > (Me->index == -1 ? 3 : 1)){
-        //curScreen().drawText(1, 0, (string("My Index: ") + to_string(Me->index) + "       " ).data());
-        assignIndex();
-        if(Me->index != -1)
-            mplay.writeCommand(Me->index, CMD_MY_INDEX, {});
-        indexTimer.restart();
-    }
 
-    if(!gameOver && Me->index != -1) do { // high priority game tick
+    if(!gameOver && mplay.myIndex() != -1) do { // high priority game tick
         bool stopMovement = false;
         short x = user->X(),
               y = user->Y(),
@@ -157,7 +111,7 @@ bool MyGame::update() {
         }
         if(_x != x || _y != y){
             user->updatePos(x, y); // move player
-            mplay.writeCommand(Me->index, CMD_UPDATE_POSITION, {x, y});
+            mplay.writeCommand(mplay.myIndex(), CMD_UPDATE_POSITION, {x, y});
         }
 
         bool stuck = true;
@@ -192,13 +146,8 @@ int main() {
     srand(time(0));
     SetConsoleTitle("Game");
 
-    Me = new Player;
-    Me->index = -1;
-    Me->instance = nullptr;
-    players.push_back(Me);
-
     { /// Game and game loop
-        MyGame game(GAME_SIZE_W, GAME_SIZE_H); // new game instance with given map size
+        MyGame game(GAME_SIZE_W, GAME_SIZE_H, new GamePlayer); // new game instance with given map size
         game.runGame(); //blocking until game is over
     }
     {   /// End title curScreen

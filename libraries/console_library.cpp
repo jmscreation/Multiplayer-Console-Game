@@ -32,9 +32,7 @@ Draw::Draw(const char backChar): backChar(backChar) {
 
     DWORD dwMode;
     GetConsoleMode(console, &dwMode);
-    dwMode |= ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT;
     dwMode |= DISABLE_NEWLINE_AUTO_RETURN; // no new line at end
-    //dwMode &= ~ENABLE_QUICK_EDIT_MODE; // disable editing mode
     SetConsoleMode(console, dwMode);
 
 }
